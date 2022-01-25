@@ -20,26 +20,27 @@ import tacos.tacocloud.Taco;
 
 import javax.validation.Valid;
 
+
 @Slf4j
 @Controller
 @RequestMapping("/design")
 public class DesignTacoController {
 
+    List<Ingredient> ingredients = Arrays.asList(
+            new Ingredient("FLTO", "pszenna", Ingredient.Type.WRAP),
+            new Ingredient("COTO", "kukurydziana", Ingredient.Type.WRAP),
+            new Ingredient("GRBF", "mielona wołowina", Ingredient.Type.PROTEIN),
+            new Ingredient("CARN", "kawałki mięsa", Ingredient.Type.PROTEIN),
+            new Ingredient("TMTO", "pomidory pokrojone w kostkę", Ingredient.Type.VEGGIES),
+            new Ingredient("LETC", "sałata", Ingredient.Type.VEGGIES),
+            new Ingredient("CHED", "cheddar", Ingredient.Type.CHEESE),
+            new Ingredient("JACK", "Monterey Jack", Ingredient.Type.CHEESE),
+            new Ingredient("SLSA", "pikantny sos pomidorowy", Ingredient.Type.SAUCE),
+            new Ingredient("SRCR", "śmietania", Ingredient.Type.SAUCE)
+    );
+
     @GetMapping
     public String showDesignForm(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("FLTO", "pszenna", Ingredient.Type.WRAP),
-                new Ingredient("COTO", "kukurydziana", Ingredient.Type.WRAP),
-                new Ingredient("GRBF", "mielona wołowina", Ingredient.Type.PROTEIN),
-                new Ingredient("CARN", "kawałki mięsa", Ingredient.Type.PROTEIN),
-                new Ingredient("TMTO", "pomidory pokrojone w kostkę", Ingredient.Type.VEGGIES),
-                new Ingredient("LETC", "sałata", Ingredient.Type.VEGGIES),
-                new Ingredient("CHED", "cheddar", Ingredient.Type.CHEESE),
-                new Ingredient("JACK", "Monterey Jack", Ingredient.Type.CHEESE),
-                new Ingredient("SLSA", "pikantny sos pomidorowy", Ingredient.Type.SAUCE),
-                new Ingredient("SRCR", "śmietania", Ingredient.Type.SAUCE)
-        );
-
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(),

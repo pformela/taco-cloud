@@ -10,7 +10,7 @@
 <h1>Przygotuj własne taco!</h1>
 <img th:src="@{/images/TacoCloud.png}"/>
 
-<form method="POST" th:object="${design}">
+<form method="POST" th:action="@{/design}" th:object="${design}">
 
     <span class="validationError"
           th:if="${#fields.hasErrors('ingredients')}"
@@ -63,7 +63,7 @@
 
         <h3>Nadaj nazwę przygotowanemu taco:</h3>
         <input type="text" th:field="*{name}"/>
-        <span th:text="${#fields.hasErrors('name')}">XXX</span>
+<!--        <span th:text="${#fields.hasErrors('name')}">XXX</span>-->
         <span class="validationError"
               th:if="${#fields.hasErrors('name')}"
               th:errors="*{name}">Błąd nazwy taco</span>
