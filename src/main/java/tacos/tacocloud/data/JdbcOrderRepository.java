@@ -1,6 +1,6 @@
 package tacos.tacocloud.data;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
 public class JdbcOrderRepository implements OrderRepository {
 
     private SimpleJdbcInsert orderInserter;
     private SimpleJdbcInsert orderTacoInserter;
-    private ObjectMapper objectMapper;
 
     @Autowired
     public JdbcOrderRepository(JdbcTemplate jdbc) {
@@ -28,8 +28,6 @@ public class JdbcOrderRepository implements OrderRepository {
 
         this.orderTacoInserter = new SimpleJdbcInsert(jdbc)
                 .withTableName("Taco_Order_Tacos");
-
-        this.objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -46,9 +44,17 @@ public class JdbcOrderRepository implements OrderRepository {
     }
 
     private long saveOrderDetails(Order order) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> values = objectMapper.convertValue(order, Map.class);
+        Map<String, Object> values = new HashMap<>();
+        values.put("id", order.getId());
         values.put("placedAt", order.getPlacedAt());
+        values.put("deliveryName", order.getName());
+        values.put("deliveryStreet", order.getStreet());
+        values.put("deliveryCity", order.getCity());
+        values.put("deliveryState", order.getState());
+        values.put("deliveryZip", order.getZip());
+        values.put("ccNumber", order.getCcNumber());
+        values.put("ccExpiration", order.getCcExpiration());
+        values.put("ccCCV", order.getCcCVV());
         long orderId = orderInserter.executeAndReturnKey(values).longValue();
 
         return orderId;
@@ -59,5 +65,6 @@ public class JdbcOrderRepository implements OrderRepository {
         values.put("tacoOrder", orderId);
         values.put("taco", taco.getId());
         orderTacoInserter.execute(values);
+        log.info("Zapisano do bazy danych");
     }
  }
