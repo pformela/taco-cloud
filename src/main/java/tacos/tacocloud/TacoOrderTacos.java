@@ -10,26 +10,27 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-@Entity(name="ingredient")
-public class Ingredient {
+@Table(name = "Taco_Order_Tacos")
+@Entity
+public class TacoOrderTacos {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private final String id;
-    private final String name;
-    @Enumerated(EnumType.STRING)
-    private final Type type;
+    private Long id;
+    @Column(name="order_id")
+    private long order_id;
+    @Column(name="taco_id")
+    private long taco_id;
 
-    public enum Type {
-        WRAP, PROTEIN, VEGGIES, CHEESE, SAUCE
+    public TacoOrderTacos(Order order, Taco taco) {
+        this.order_id = order.getId();
+        this.taco_id = taco.getId();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Ingredient that = (Ingredient) o;
+        TacoOrderTacos that = (TacoOrderTacos) o;
         return id != null && Objects.equals(id, that.id);
     }
 

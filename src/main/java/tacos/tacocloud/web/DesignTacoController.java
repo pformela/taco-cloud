@@ -52,6 +52,8 @@ public class DesignTacoController {
         ingredients = new ArrayList<>();
         ingredientRepo.findAll().forEach(i -> ingredients.add(i));
 
+        log.info("Lista składników; " + ingredients);
+
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(),
@@ -69,6 +71,7 @@ public class DesignTacoController {
         }
 
         Taco saved = designRepo.save(design);
+        order.addDesign(saved);
         log.info("Przetwarzanie projektu taco: " + design);
         return "redirect:/orders/current";
     }
